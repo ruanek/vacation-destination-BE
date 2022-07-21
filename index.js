@@ -32,3 +32,7 @@ app.get("/destination", (req, res) => {
     console.log(error);
   }
 });
+
+app.get("/", (req, res) => {
+  res.send("Add the right endpoint dude /destination");
+});
