@@ -1,14 +1,24 @@
 export function validateIt(req, res, next) {
   const { destination, location } = req.body;
 
-  if (!destination || !location) {
-    return res.status(400).send({ error: "Destination and Location Required" });
-  }
-
-  if (typeof destination !== "string" || typeof location !== "string") {
+  if (
+    !isValidateRequiredField(location) ||
+    !isValidateRequiredField(destination)
+  ) {
     return res
       .status(400)
-      .send({ error: "Destination and Location have to be valid text" });
+      .send({
+        error:
+          "Location and destination are BOTH reqired and have to be valid text",
+      });
   }
+
   next();
+}
+
+export function isValidateRequiredField(field) {
+  if (!field || typeof field !== "string") {
+    return false;
+  }
+  return true;
 }

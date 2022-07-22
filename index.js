@@ -1,15 +1,14 @@
 //importing module from express
 import express from "express";
-//importing module from cors
 import cors from "cors";
-import { filterDestinations as filter } from "./Util/filters.js";
-import { validateIt } from "./Util/validators.js";
-import { getUnsplashPhoto } from "./Util/data_access.js";
+import { destRouter } from "./Routes/destinations.js";
 //setting the express function to app
 const app = express();
 // telling the api to use cors() as middleware
 app.use(cors());
 app.use(express.json());
+
+app.use("/destination", destRouter);
 
 //allows heroku to port select
 const PORT = process.env.PORT || 3000;
@@ -18,7 +17,7 @@ app.listen(PORT, () => {
   console.log(`Server listening on port:${PORT}`);
 });
 //Stand in Database
-const destinationsDB = {
+export const destinationsDB = {
   123456: {
     destination: "Eiffel Tower",
     location: "Paris",
@@ -41,26 +40,3 @@ const destinationsDB = {
     description: "",
   },
 };
-//Read(GET) request to respond witht he obj of the db
-app.get("/destination", (req, res) => {
-  const city = req.query.city;
-  filter({ city, destinationsDB, res });
-});
-
-app.get("/destination/city/:cityName", (req, res) => {
-  const city = req.params.cityName;
-  filter({ city, destinationsDB, res });
-});
-
-//Create(POST)
-app.post("/destination", validateIt, async (req, res) => {
-  const { destination, location, description } = req.body;
-  const photo = await getUnsplashPhoto({ destination, location });
-  const randId = Math.floor(Math.random() * 999999);
-  destinationsDB[randId] = { destination, location, photo, description };
-  res.status(200).json({ status: 200, response: destinationsDB });
-});
-
-//Update(PUT)
-
-//Delete(DELETE)
