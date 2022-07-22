@@ -4,7 +4,7 @@ import uniqueid from "uniquid";
 import { filterDestinations as filter } from "../Util/filters.js";
 import { validateIt, isValidateRequiredField } from "../Util/validators.js";
 import { getUnsplashPhoto } from "../Util/data_access.js";
-import { destinationsDB } from "../index.js";
+import { destinationsDB } from "../Util/db.js";
 export const destRouter = express.Router();
 
 //Read(GET) request to respond witht he obj of the db
